@@ -26,5 +26,13 @@ for layer in layers:
     options = "_CoordinateSystem=World _Enter"
     rs.Command("_BoundingBox " + options)
 
+
+    # Log file
+    text = rs.CommandHistory()
+    f = open('record.txt','a')
+    f.write(text)
+    f.close()
+    rs.ClearCommandHistory()
+
     # Deselect the objects on the layer
     rs.UnselectObjects(objects)
