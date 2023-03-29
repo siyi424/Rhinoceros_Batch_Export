@@ -16,10 +16,9 @@ for layer in layers:
     if "::" in filename:
         filename = filename.split("::")[1]
     # Set the export options for wrl format and version 2.0
+    # bcz ParaView can only read wrl version 2.0 files!
     options = "_Version=2.0 _Enter"
-    # Export the selected objects to the wrl file with the given filename and options
     rs.Command("_-Export " + filename + " " + options)
-    print("Exported " + filename) # print a confirmation message
 
 
     # BoundingBox
@@ -29,10 +28,22 @@ for layer in layers:
 
     # Log file
     text = rs.CommandHistory()
+    # filter "min\max\dimensions" that we need
+    res = filename + "\n"
+    for line in text.splitlines():
+        if line.startswith("min = "):
+            res += line + "\n"
+        elif line.startswith("max = "):
+            res += line + "\n"
+        elif line.startswith("dimensions = "):
+            res += line + "\n"
+    res += "--------------------------------------- \n"
     f = open('record.txt','a')
-    f.write(text)
+    f.write(res)
     f.close()
     rs.ClearCommandHistory()
 
     # Deselect the objects on the layer
     rs.UnselectObjects(objects)
+
+
