@@ -25,8 +25,9 @@ To check whether the generated wsl files could be used or not, I utilize the Par
 ## Getting Started
 1. **Download "batch_export.py"** at anywhere, just making sure you could find it.
 2. At your Workspace folder, **create a new "record.txt" file**. World coordinates data will be saved into this txt file.
-3. Open Rhinoceros $\rightarrow$ "Tools" $\rightarrow$ "PythonScripts" $\rightarrow$ Find "batch_export.py" file that you downloaded $\rightarrow$ Choose layers you want to export.
+3. Open Rhinoceros $\rightarrow$ "Tools" $\rightarrow$ "PythonScripts" $\rightarrow$ Find "batch_export.py" file that you downloaded $\rightarrow$ Select layers you want to export.
 4. Few seconds later, everything will be finished. Just go ahead and see your results!:smile:
 
 ## Notes
-Commands could be easily replaced if you have other demands ~
+- Commands could be easily replaced if you have other demands ~
+- **Mesh Ojbects need manually confirm settings!**
