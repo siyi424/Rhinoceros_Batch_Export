@@ -24,6 +24,7 @@ for obj in objects:
                 break
 
 if not NotGrouped:
+    print('Please ungroup prompted layers!')
     exit()
 print('NotGrouped Check over!')
 
