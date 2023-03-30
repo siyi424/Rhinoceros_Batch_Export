@@ -1,5 +1,33 @@
 import rhinoscriptsyntax as rs
 
+
+# Check whether objects in different layers have been grouped together
+# set NotGrouped signal
+NotGrouped = True
+objects = rs.AllObjects()
+layers = set()
+for obj in objects:
+    # Check if object is in a group
+    if rs.ObjectGroups(obj):
+        # Get group name
+        group_name = rs.ObjectGroups(obj)[0]
+        group_objects = rs.ObjectsByGroup(group_name)
+
+        # Check if object is in a different layer than other objects in the group
+        for group_obj in group_objects:
+            l1 = rs.ObjectLayer(obj)
+            l2 = rs.ObjectLayer(group_obj)
+            if l1 != l2 and l2 not in layers:
+                print("( " + l1 + " ) & ( " + l2 + " ) have been grouped together.")
+                layers.add(rs.ObjectLayer(obj))
+                NotGrouped = False
+                break
+
+if not NotGrouped:
+    exit()
+print('NotGrouped Check over!')
+
+
 # Get a list of layer names
 layers = rs.GetLayers("Select layers to operate on", True)
 if not layers: exit()
@@ -45,5 +73,3 @@ for layer in layers:
 
     # Deselect the objects on the layer
     rs.UnselectObjects(objects)
-
-
