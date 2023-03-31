@@ -2,42 +2,53 @@ import rhinoscriptsyntax as rs
 import re
 
 # Check whether objects in different layers have been grouped together
-# set NotGrouped signal
-NotGrouped = True
-objects = rs.AllObjects()
-gp_layers = set()
-for obj in objects:
-    # Check if object is in a group
-    if rs.ObjectGroups(obj):
-        # Get group name
-        group_name = rs.ObjectGroups(obj)[0]
-        group_objects = rs.ObjectsByGroup(group_name)
+# Check whether selected layer has "id" numbers in its layername
+# Check whether selected layers are visible!
 
-        # Check if object is in a different layer than other objects in the group
-        for group_obj in group_objects:
-            l1 = rs.ObjectLayer(obj)
-            l2 = rs.ObjectLayer(group_obj)
-            if l1 != l2 and l2 not in gp_layers:
-                print("( " + l1 + " ) & ( " + l2 + " ) have been grouped together.")
-                gp_layers.add(rs.ObjectLayer(obj))
-                NotGrouped = False
-                break
+# Get a list of layer names & Select
+layers = rs.GetLayers("Select layers to operate on", True)
+if not layers: exit()
+
+
+NotGrouped = True
+Visible = True
+gp_layers = set()
+
+for layer in layers:
+    # Check if object is in a group
+    objects = rs.ObjectsByLayer(layer)
+    for obj in objects:
+        if rs.ObjectGroups(obj):
+            # Get group name
+            group_name = rs.ObjectGroups(obj)[0]
+            group_objects = rs.ObjectsByGroup(group_name)
+
+            # Check if object is in a different layer than other objects in the group
+            for group_obj in group_objects:
+                l1 = layer
+                l2 = rs.ObjectLayer(group_obj)
+                if l1 != l2 and l2 not in gp_layers:
+                    print("( " + l1 + " ) & ( " + l2 + " ) have been grouped together.")
+                    gp_layers.add(layer)
+                    NotGrouped = False
+                    break
+    
+    if Visible:
+        vis = rs.IsLayerVisible(layer)
+        if not vis:
+            Visible = False
 
 if not NotGrouped:
     print('Please ungroup prompted layers!')
+if not Visible:
+    print('Please make all the selected layers visible!')
+if not NotGrouped or not Visible:
     exit()
 print('NotGrouped Check over!')
-
-
-# Check whether selected layer has "id" numbers in its layername
-
+print('Visible Check over!')
 
 
 
-# main 
-# Get a list of layer names
-layers = rs.GetLayers("Select layers to operate on", True)
-if not layers: exit()
 
 # record how many sublayers
 record = {}
