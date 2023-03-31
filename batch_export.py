@@ -1,11 +1,11 @@
 import rhinoscriptsyntax as rs
-
+import re
 
 # Check whether objects in different layers have been grouped together
 # set NotGrouped signal
 NotGrouped = True
 objects = rs.AllObjects()
-layers = set()
+gp_layers = set()
 for obj in objects:
     # Check if object is in a group
     if rs.ObjectGroups(obj):
@@ -17,9 +17,9 @@ for obj in objects:
         for group_obj in group_objects:
             l1 = rs.ObjectLayer(obj)
             l2 = rs.ObjectLayer(group_obj)
-            if l1 != l2 and l2 not in layers:
+            if l1 != l2 and l2 not in gp_layers:
                 print("( " + l1 + " ) & ( " + l2 + " ) have been grouped together.")
-                layers.add(rs.ObjectLayer(obj))
+                gp_layers.add(rs.ObjectLayer(obj))
                 NotGrouped = False
                 break
 
@@ -29,10 +29,18 @@ if not NotGrouped:
 print('NotGrouped Check over!')
 
 
+# Check whether selected layer has "id" numbers in its layername
+
+
+
+
+# main 
 # Get a list of layer names
 layers = rs.GetLayers("Select layers to operate on", True)
 if not layers: exit()
 
+# record how many sublayers
+record = {}
 # For each layer name
 for layer in layers:
     # Get a list of objects on the layer and select it
@@ -40,10 +48,14 @@ for layer in layers:
     if not objects: continue
 
     # Export
-    filename = str(layer) + ".wrl"
+    id = re.findall('\d+', layer)[0]
+    if id not in record:
+        record[id] = -1
+    filename = id + '.wrl'
     # bcz "::" can't be used in a Windows filename, we need to check and change sublayers' layername
-    if "::" in filename:
-        filename = filename.split("::")[1]
+    if "::" in layer:
+        record[id] += 1
+        filename = id + '_' + str(record[id]) + '.wrl'
     # Set the export options for wrl format and version 2.0
     # bcz ParaView can only read wrl version 2.0 files!
     options = "_Version=2.0 _Enter"
@@ -74,3 +86,5 @@ for layer in layers:
 
     # Deselect the objects on the layer
     rs.UnselectObjects(objects)
+
+
