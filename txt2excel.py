@@ -6,28 +6,28 @@ workbook = xlsxwriter.Workbook('output.xlsx')
 worksheet = workbook.add_worksheet()
 
 # set col names
-col_names = ['id', 'min_x', 'min_y', 'min_z', 'max_x', 'max_y', 'max_z', 'size_x', 'size_y', 'size_z']
+col_names = ['filename', 'id', 'min_x', 'min_y', 'min_z', 'max_x', 'max_y', 'max_z', 'size_x', 'size_y', 'size_z']
 worksheet.write_row(0, 0, col_names)
 
 # data processing
 row = 1
-id, min_x, min_y, min_z, max_x, max_y, max_z, size_x, size_y, size_z = [0] * 10
+filename, id, min_x, min_y, min_z, max_x, max_y, max_z, size_x, size_y, size_z = [0] * 11
 data = open('record.txt', 'r')
 linelist = data.readlines()
 for line in linelist:
     # write a row
     if  line == "--------------------------------------- \n":
-        newline = [id, min_x, min_y, min_z, max_x, max_y, max_z, size_x, size_y, size_z]
+        newline = [filename, id, min_x, min_y, min_z, max_x, max_y, max_z, size_x, size_y, size_z]
         worksheet.write_row(row, 0, newline)
         row += 1
 
     # get id
     elif '.wrl' in line:
-        id = line.split('.')[0]
-        if '_' in id:
-            id = int(id.split('_')[0])
+        filename = line.split('.')[0]
+        if '_' in filename:
+            id = int(filename.split('_')[0])
         else:
-            id = int(id)
+            id = int(filename)
     
     # get min loc 
     elif line.startswith('min = '):
