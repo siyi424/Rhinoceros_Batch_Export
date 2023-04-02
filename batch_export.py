@@ -50,8 +50,10 @@ print('Visible Check over!')
 
 # saved path: must be the full path!
 path = "C:\\Users\\crthx\\Desktop\\Fudan\\Rhinoceros_Batch_Export_wrl\\wrl\\"
+
 # record how many sublayers
 record = {}
+
 # For each layer name
 for layer in layers:
     # Get a list of objects on the layer and select it
