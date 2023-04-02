@@ -1,15 +1,15 @@
 import rhinoscriptsyntax as rs
 import re
 
-# Check whether objects in different layers have been grouped together
-# Check whether selected layer has "id" numbers in its layername
-# Check whether selected layers are visible!
 
 # Get a list of layer names & Select
 layers = rs.GetLayers("Select layers to operate on", True)
 if not layers: exit()
 
 
+# Check whether objects in different layers have been grouped together: accomplished
+# Check whether selected layer has "id" numbers in its layername: waiting
+# Check whether selected layers are visible: accomplished
 NotGrouped = True
 Visible = True
 gp_layers = set()
@@ -48,8 +48,8 @@ print('NotGrouped Check over!')
 print('Visible Check over!')
 
 
-
-
+# saved path: must be the full path!
+path = "C:\\Users\\crthx\\Desktop\\Fudan\\Rhinoceros_Batch_Export_wrl\\wrl\\"
 # record how many sublayers
 record = {}
 # For each layer name
@@ -59,6 +59,7 @@ for layer in layers:
     if not objects: continue
 
     # Export
+    # saved into ".\generated" folder
     id = re.findall('\d+', layer)[0]
     if id not in record:
         record[id] = -1
@@ -70,7 +71,8 @@ for layer in layers:
     # Set the export options for wrl format and version 2.0
     # bcz ParaView can only read wrl version 2.0 files!
     options = "_Version=2.0 _Enter"
-    rs.Command("_-Export " + filename + " " + options)
+    fullname = path + filename
+    rs.Command("_-Export " + fullname + " " + options)
 
 
     # BoundingBox
