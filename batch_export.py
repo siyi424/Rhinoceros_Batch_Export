@@ -48,10 +48,10 @@ print('NotGrouped Check over!')
 print('Visible Check over!')
 
 
-# saved path: must be the full path!
+# Saved path: must be the full path!
 path = "C:\\Users\\crthx\\Desktop\\Fudan\\Rhinoceros_Batch_Export_wrl\\wrl\\"
 
-# record how many sublayers
+# Record how many sublayers
 record = {}
 
 # For each layer name
@@ -72,7 +72,8 @@ for layer in layers:
         filename = id + '_' + str(record[id]) + '.wrl'
     # Set the export options for wrl format and version 2.0
     # bcz ParaView can only read wrl version 2.0 files!
-    options = "_Version=2.0 _Enter"
+    # Double "_Enter": to solve prompting "Mesh setting (...)" automatically
+    options = "_Version=2.0 _Enter _Enter"
     fullname = path + filename
     rs.Command("_-Export " + fullname + " " + options)
 
@@ -80,10 +81,12 @@ for layer in layers:
     # BoundingBox
     options = "_CoordinateSystem=World _Enter"
     rs.Command("_BoundingBox " + options)
+    
 
 
     # Log file
     text = rs.CommandHistory()
+    
     # filter "min\max\dimensions" that we need
     res = filename + "\n"
     for line in text.splitlines():
