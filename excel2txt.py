@@ -47,8 +47,8 @@ for k in range(0, num):
 res += '\n'
 res += str(m_x) + " " + str(m_y) + " " + str(m_z)
 
-
-f = open('wrldata.txt','a')
-f.write(res)
-f.close()
+# "w+" mode: the pointer is located at the most beginning of a file. 
+# if the file exits, codes will clear all contents. Otherwise, codes will create a new file.
+with open('wrldata.txt','w+') as f:
+    f.write(res)
 
