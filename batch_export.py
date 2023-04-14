@@ -49,7 +49,8 @@ print('Visible Check over!')
 
 
 # Saved path: must be the full path!
-path = "C:\\Users\\crthx\\Desktop\\Fudan\\Rhinoceros_Batch_Export_wrl\\wrl\\"
+# path = "C:\\Users\\crthx\\Desktop\\Fudan\\Rhinoceros_Batch_Export_wrl\\wrl\\"
+path = "D:\\Fudan\\Rhinoceros_Batch_Export_wrl\\wrl"
 
 # Record how many sublayers
 record = {}
